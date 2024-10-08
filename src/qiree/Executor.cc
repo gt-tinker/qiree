@@ -57,10 +57,9 @@ std::uintptr_t QIREE_QIS_FUNCTION(m, body)(std::uintptr_t arg1)
 {
     return q_interface_->m(Qubit{arg1}).value;
 }
-std::uintptr_t
-QIREE_QIS_FUNCTION(measure, body)(std::uintptr_t arg1, std::uintptr_t arg2)
+std::uintptr_t QIREE_QIS_FUNCTION(measure, body)(Array arg1, Array arg2)
 {
-    return q_interface_->measure(Array{arg1}, Array{arg2}).value;
+    return q_interface_->measure(arg1, arg2).value;
 }
 std::uintptr_t QIREE_QIS_FUNCTION(mresetz, body)(std::uintptr_t arg1)
 {
@@ -99,33 +98,29 @@ void QIREE_QIS_FUNCTION(cz, body)(std::uintptr_t arg1, std::uintptr_t arg2)
 {
     return q_interface_->cz(Qubit{arg1}, Qubit{arg2});
 }
-void QIREE_QIS_FUNCTION(exp, adj)(std::uintptr_t arg1,
-                                  double arg2,
-                                  std::uintptr_t arg3)
+void QIREE_QIS_FUNCTION(exp, adj)(Array arg1, double arg2, Array arg3)
 {
-    return q_interface_->exp_adj(Array{arg1}, arg2, Array{arg3});
+    return q_interface_->exp_adj(arg1, arg2, arg3);
 }
-void QIREE_QIS_FUNCTION(exp, body)(std::uintptr_t arg1,
-                                   double arg2,
-                                   std::uintptr_t arg3)
+void QIREE_QIS_FUNCTION(exp, body)(Array arg1, double arg2, Array arg3)
 {
-    return q_interface_->exp(Array{arg1}, arg2, Array{arg3});
+    return q_interface_->exp(arg1, arg2, arg3);
 }
-void QIREE_QIS_FUNCTION(exp, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(exp, ctl)(Array arg1, Tuple arg2)
 {
-    return q_interface_->exp(Array{arg1}, Tuple{arg2});
+    return q_interface_->exp(arg1, arg2);
 }
-void QIREE_QIS_FUNCTION(exp, ctladj)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(exp, ctladj)(Array arg1, Tuple arg2)
 {
-    return q_interface_->exp_adj(Array{arg1}, Tuple{arg2});
+    return q_interface_->exp_adj(arg1, arg2);
 }
 void QIREE_QIS_FUNCTION(h, body)(std::uintptr_t arg1)
 {
     return q_interface_->h(Qubit{arg1});
 }
-void QIREE_QIS_FUNCTION(h, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(h, ctl)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->h(Array{arg1}, Qubit{arg2});
+    return q_interface_->h(arg1, Qubit{arg2});
 }
 void QIREE_QIS_FUNCTION(r,
                         adj)(pauli_type arg1, double arg2, std::uintptr_t arg3)
@@ -137,13 +132,13 @@ void QIREE_QIS_FUNCTION(r,
 {
     return q_interface_->r(static_cast<Pauli>(arg1), arg2, Qubit{arg3});
 }
-void QIREE_QIS_FUNCTION(r, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(r, ctl)(Array arg1, Tuple arg2)
 {
-    return q_interface_->r(Array{arg1}, Tuple{arg2});
+    return q_interface_->r(arg1, arg2);
 }
-void QIREE_QIS_FUNCTION(r, ctladj)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(r, ctladj)(Array arg1, Tuple arg2)
 {
-    return q_interface_->r_adj(Array{arg1}, Tuple{arg2});
+    return q_interface_->r_adj(arg1, arg2);
 }
 void QIREE_QIS_FUNCTION(reset, body)(std::uintptr_t arg1)
 {
@@ -153,9 +148,9 @@ void QIREE_QIS_FUNCTION(rx, body)(double arg1, std::uintptr_t arg2)
 {
     return q_interface_->rx(arg1, Qubit{arg2});
 }
-void QIREE_QIS_FUNCTION(rx, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(rx, ctl)(Array arg1, Tuple arg2)
 {
-    return q_interface_->rx(Array{arg1}, Tuple{arg2});
+    return q_interface_->rx(arg1, arg2);
 }
 void QIREE_QIS_FUNCTION(rxx, body)(double arg1,
                                    std::uintptr_t arg2,
@@ -167,9 +162,9 @@ void QIREE_QIS_FUNCTION(ry, body)(double arg1, std::uintptr_t arg2)
 {
     return q_interface_->ry(arg1, Qubit{arg2});
 }
-void QIREE_QIS_FUNCTION(ry, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(ry, ctl)(Array arg1, Tuple arg2)
 {
-    return q_interface_->ry(Array{arg1}, Tuple{arg2});
+    return q_interface_->ry(arg1, arg2);
 }
 void QIREE_QIS_FUNCTION(ryy, body)(double arg1,
                                    std::uintptr_t arg2,
@@ -181,9 +176,9 @@ void QIREE_QIS_FUNCTION(rz, body)(double arg1, std::uintptr_t arg2)
 {
     return q_interface_->rz(arg1, Qubit{arg2});
 }
-void QIREE_QIS_FUNCTION(rz, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(rz, ctl)(Array arg1, Tuple arg2)
 {
-    return q_interface_->rz(Array{arg1}, Tuple{arg2});
+    return q_interface_->rz(arg1, arg2);
 }
 void QIREE_QIS_FUNCTION(rzz, body)(double arg1,
                                    std::uintptr_t arg2,
@@ -199,13 +194,13 @@ void QIREE_QIS_FUNCTION(s, body)(std::uintptr_t arg1)
 {
     return q_interface_->s(Qubit{arg1});
 }
-void QIREE_QIS_FUNCTION(s, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(s, ctl)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->s(Array{arg1}, Qubit{arg2});
+    return q_interface_->s(arg1, Qubit{arg2});
 }
-void QIREE_QIS_FUNCTION(s, ctladj)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(s, ctladj)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->s_adj(Array{arg1}, Qubit{arg2});
+    return q_interface_->s_adj(arg1, Qubit{arg2});
 }
 void QIREE_QIS_FUNCTION(swap, body)(std::uintptr_t arg1, std::uintptr_t arg2)
 {
@@ -219,56 +214,55 @@ void QIREE_QIS_FUNCTION(t, body)(std::uintptr_t arg1)
 {
     return q_interface_->t(Qubit{arg1});
 }
-void QIREE_QIS_FUNCTION(t, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(t, ctl)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->t(Array{arg1}, Qubit{arg2});
+    return q_interface_->t(arg1, Qubit{arg2});
 }
-void QIREE_QIS_FUNCTION(t, ctladj)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(t, ctladj)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->t_adj(Array{arg1}, Qubit{arg2});
+    return q_interface_->t_adj(arg1, Qubit{arg2});
 }
 void QIREE_QIS_FUNCTION(x, body)(std::uintptr_t arg1)
 {
     return q_interface_->x(Qubit{arg1});
 }
-void QIREE_QIS_FUNCTION(x, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(x, ctl)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->x(Array{arg1}, Qubit{arg2});
+    return q_interface_->x(arg1, Qubit{arg2});
 }
 void QIREE_QIS_FUNCTION(y, body)(std::uintptr_t arg1)
 {
     return q_interface_->y(Qubit{arg1});
 }
-void QIREE_QIS_FUNCTION(y, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(y, ctl)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->y(Array{arg1}, Qubit{arg2});
+    return q_interface_->y(arg1, Qubit{arg2});
 }
 void QIREE_QIS_FUNCTION(z, body)(std::uintptr_t arg1)
 {
     return q_interface_->z(Qubit{arg1});
 }
-void QIREE_QIS_FUNCTION(z, ctl)(std::uintptr_t arg1, std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(z, ctl)(Array arg1, std::uintptr_t arg2)
 {
-    return q_interface_->z(Array{arg1}, Qubit{arg2});
+    return q_interface_->z(arg1, Qubit{arg2});
 }
 //---------------------------------------------------------------------------//
 // ASSERTIONS
 //---------------------------------------------------------------------------//
-void QIREE_QIS_FUNCTION(assertmeasurementprobability,
-                        body)(std::uintptr_t arg1,
-                              std::uintptr_t arg2,
-                              std::uintptr_t arg3,
-                              double arg4,
-                              std::uintptr_t arg5,
-                              double arg6)
+void QIREE_QIS_FUNCTION(assertmeasurementprobability, body)(Array arg1,
+                                                            Array arg2,
+                                                            std::uintptr_t arg3,
+                                                            double arg4,
+                                                            std::uintptr_t arg5,
+                                                            double arg6)
 {
     return q_interface_->assertmeasurementprobability(
-        Array{arg1}, Array{arg2}, Result{arg3}, arg4, String{arg5}, arg6);
+        arg1, arg2, Result{arg3}, arg4, String{arg5}, arg6);
 }
-void QIREE_QIS_FUNCTION(assertmeasurementprobability, ctl)(std::uintptr_t arg1,
-                                                           std::uintptr_t arg2)
+void QIREE_QIS_FUNCTION(assertmeasurementprobability, ctl)(Array arg1,
+                                                           Tuple arg2)
 {
-    return q_interface_->assertmeasurementprobability(Array{arg1}, Tuple{arg2});
+    return q_interface_->assertmeasurementprobability(arg1, arg2);
 }
 
 //---------------------------------------------------------------------------//
@@ -290,6 +284,36 @@ void QIREE_RT_FUNCTION(result_record_output)(std::uintptr_t r,
                                              OptionalCString tag)
 {
     return r_interface_->result_record_output(Result{r}, tag);
+}
+
+Array QIREE_RT_FUNCTION(array_create_1d)(uint32_t elem_size, uint64_t length)
+{
+    return r_interface_->array_create_1d(elem_size, length);
+}
+
+void QIREE_RT_FUNCTION(array_update_reference_count)(Array array, int32_t delta)
+{
+    r_interface_->array_update_reference_count(array, delta);
+}
+
+void* QIREE_RT_FUNCTION(array_get_element_ptr_1d)(Array array, uint64_t index)
+{
+    return r_interface_->array_get_element_ptr_1d(array, index);
+}
+
+uint64_t QIREE_RT_FUNCTION(array_get_size_1d)(Array array)
+{
+    return r_interface_->array_get_size_1d(array);
+}
+
+Tuple QIREE_RT_FUNCTION(tuple_create)(uint64_t num_bytes)
+{
+    return r_interface_->tuple_create(num_bytes);
+}
+
+void QIREE_RT_FUNCTION(tuple_update_reference_count)(Tuple tuple, int32_t delta)
+{
+    return r_interface_->tuple_update_reference_count(tuple, delta);
 }
 
 //!@}
@@ -399,6 +423,13 @@ Executor::Executor(Module&& module)
     // Assertions
     QIREE_BIND_QIS_FUNCTION(assertmeasurementprobability, body);
     QIREE_BIND_QIS_FUNCTION(assertmeasurementprobability, ctl);
+
+    QIREE_BIND_RT_FUNCTION(array_create_1d);
+    QIREE_BIND_RT_FUNCTION(array_update_reference_count);
+    QIREE_BIND_RT_FUNCTION(array_get_element_ptr_1d);
+    QIREE_BIND_RT_FUNCTION(array_get_size_1d);
+    QIREE_BIND_RT_FUNCTION(tuple_create);
+    QIREE_BIND_RT_FUNCTION(tuple_update_reference_count);
 
     QIREE_BIND_RT_FUNCTION(initialize);
     QIREE_BIND_RT_FUNCTION(array_record_output);

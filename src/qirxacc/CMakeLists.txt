@@ -5,6 +5,7 @@
 #----------------------------------------------------------------------------#
 
 qiree_add_library(qirxacc
+  MemManager.cc
   XaccQuantum.cc
   XaccDefaultRuntime.cc
   XaccTupleRuntime.cc

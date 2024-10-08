@@ -90,23 +90,35 @@ enum class Pauli : pauli_type
 // TYPE ALIASES
 //---------------------------------------------------------------------------//
 
-//! Opaque QIR array identifier
-using Array = OpaqueId<struct Array_>;
-
 //! Opaque QIR result identifier
 using Result = OpaqueId<struct Result_>;
 
 //! Opaque QIR string identifier
 using String = OpaqueId<struct String_>;
 
-//! Opaque QIR tuple identifier
-using Tuple = OpaqueId<struct Tuple_>;
-
 //! Opaque QIR qubit identifier
 using Qubit = OpaqueId<struct Qubit_>;
 
 //! Pointer to a C string that may be null
 using OptionalCString = char const*;
+
+// These are actually pointers in our runtime
+
+using Tuple = void*;
+
+using Array = void*;
+
+//---------------------------------------------------------------------------//
+/*!
+ *
+ * Passed to __quantum__qis__rx__ctl(), __quantum__qis__ry__ctl(), and
+ * __quantum__qis__rz__ctl(). Why? No clue
+ */
+struct RotationArgs
+{
+    double theta;
+    Qubit qubit;
+};
 
 //---------------------------------------------------------------------------//
 }  // namespace qiree

@@ -89,19 +89,30 @@ class XaccQuantum final : virtual public QuantumNotImpl
     void cy(Qubit, Qubit) final;
     void cz(Qubit, Qubit) final;
     void h(Qubit) final;
+    void h(Array, Qubit) final;
     void reset(Qubit) final;
     void rx(double, Qubit) final;
+    void rx(Array, Tuple) final;
     void ry(double, Qubit) final;
+    void ry(Array, Tuple) final;
     void rz(double, Qubit) final;
+    void rz(Array, Tuple) final;
     void rzz(double, Qubit, Qubit) final;
     void s(Qubit) final;
+    void s(Array, Qubit) final;
     void s_adj(Qubit) final;
+    void s_adj(Array, Qubit) final;
     void swap(Qubit, Qubit) final;
     void t(Qubit) final;
+    void t(Array, Qubit) final;
     void t_adj(Qubit) final;
+    void t_adj(Array, Qubit) final;
     void x(Qubit) final;
+    void x(Array, Qubit) final;
     void y(Qubit) final;
+    void y(Array, Qubit) final;
     void z(Qubit) final;
+    void z(Array, Qubit) final;
     //!@}
 
     //!@{
@@ -175,6 +186,12 @@ class XaccQuantum final : virtual public QuantumNotImpl
                                    std::initializer_list<Qubit> ctrl_list,
                                    Qubit q,
                                    Ts... args);
+
+    template<class... Ts>
+    void add_ctrl_instruction(std::string s, Array ctrls, Qubit q, Ts... args);
+
+    template<class... Ts>
+    void add_ctrl_rot_instruction(std::string s, Array ctrls, Tuple rot_args);
 };
 
 //---------------------------------------------------------------------------//

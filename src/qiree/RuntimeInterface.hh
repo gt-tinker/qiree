@@ -37,6 +37,15 @@ result_record_output(%Result* inttoptr (i64 2 to %Result*), i8* null)
 class RuntimeInterface
 {
   public:
+    /// MEMORY MANAGEMENT ////
+    virtual Array array_create_1d(uint32_t elem_size, uint64_t length) = 0;
+    virtual void array_update_reference_count(Array array, int32_t delta) = 0;
+    virtual void* array_get_element_ptr_1d(Array array, uint64_t index) = 0;
+    virtual uint64_t array_get_size_1d(Array array) = 0;
+    virtual Tuple tuple_create(uint64_t num_bytes) = 0;
+    virtual void tuple_update_reference_count(Tuple tuple, int32_t delta) = 0;
+
+    /// RESULT RECORDING ////
     //! Initialize the execution environment, resetting qubits
     virtual void initialize(OptionalCString env) = 0;
 

@@ -131,6 +131,19 @@ class ResultTestImpl final : public RuntimeInterface
     // Store one result
     void result_record_output(Result, OptionalCString tag) final;
 
+    Array array_create_1d(uint32_t elem_size, uint64_t length) override
+    {
+        return nullptr;
+    }
+    void array_update_reference_count(Array array, int32_t delta) override {}
+    void* array_get_element_ptr_1d(Array array, uint64_t index) override
+    {
+        return nullptr;
+    }
+    uint64_t array_get_size_1d(Array array) override { return 0; }
+    Tuple tuple_create(uint64_t num_bytes) override { return nullptr; }
+    void tuple_update_reference_count(Tuple tuple, int32_t delta) override {}
+
   private:
     TestResult* tr_;
 };

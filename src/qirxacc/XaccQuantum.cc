@@ -10,11 +10,13 @@
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
+#include <unordered_set>
 #include <utility>
 #include <xacc/xacc.hpp>
 #include <xacc/xacc_service.hpp>
 
 #include "qiree/Assert.hh"
+#include "qirxacc/MemManager.hh"
 
 using xacc::constants::pi;
 
@@ -194,6 +196,10 @@ void XaccQuantum::h(Qubit q)
 {
     this->add_instruction("H", q);
 }
+void XaccQuantum::h(Array ctrls, Qubit q)
+{
+    this->add_ctrl_instruction("H", ctrls, q);
+}
 void XaccQuantum::reset(Qubit q)
 {
     this->add_instruction("Reset", q);
@@ -202,13 +208,25 @@ void XaccQuantum::rx(double angle, Qubit q)
 {
     this->add_instruction("Rx", q, angle);
 }
+void XaccQuantum::rx(Array ctrls, Tuple rot_args)
+{
+    this->add_ctrl_rot_instruction("Rx", ctrls, rot_args);
+}
 void XaccQuantum::ry(double angle, Qubit q)
 {
     this->add_instruction("Ry", q, angle);
 }
+void XaccQuantum::ry(Array ctrls, Tuple rot_args)
+{
+    this->add_ctrl_rot_instruction("Ry", ctrls, rot_args);
+}
 void XaccQuantum::rz(double angle, Qubit q)
 {
     this->add_instruction("Rz", q, angle);
+}
+void XaccQuantum::rz(Array ctrls, Tuple rot_args)
+{
+    this->add_ctrl_rot_instruction("Rz", ctrls, rot_args);
 }
 void XaccQuantum::rzz(double angle, Qubit q1, Qubit q2)
 {
@@ -216,11 +234,19 @@ void XaccQuantum::rzz(double angle, Qubit q1, Qubit q2)
 }
 void XaccQuantum::s(Qubit q)
 {
-    return this->rz(pi / 2, q);
+    return this->add_instruction("S", q);
+}
+void XaccQuantum::s(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("S", ctrls, q);
 }
 void XaccQuantum::s_adj(Qubit q)
 {
-    return this->rz(-pi / 2, q);
+    return this->add_instruction("Sdg", q);
+}
+void XaccQuantum::s_adj(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("Sdg", ctrls, q);
 }
 void XaccQuantum::swap(Qubit q1, Qubit q2)
 {
@@ -232,23 +258,43 @@ void XaccQuantum::swap(Qubit q1, Qubit q2)
 }
 void XaccQuantum::t(Qubit q)
 {
-    return this->rz(pi / 4, q);
+    return this->add_instruction("T", q);
+}
+void XaccQuantum::t(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("T", ctrls, q);
 }
 void XaccQuantum::t_adj(Qubit q)
 {
-    return this->rz(-pi / 4, q);
+    return this->add_instruction("Tdg", q);
+}
+void XaccQuantum::t_adj(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("Tdg", ctrls, q);
 }
 void XaccQuantum::x(Qubit q)
 {
     this->add_instruction("X", q);
 }
+void XaccQuantum::x(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("X", ctrls, q);
+}
 void XaccQuantum::y(Qubit q)
 {
     this->add_instruction("Y", q);
 }
+void XaccQuantum::y(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("Y", ctrls, q);
+}
 void XaccQuantum::z(Qubit q)
 {
     this->add_instruction("Z", q);
+}
+void XaccQuantum::z(Array ctrls, Qubit q)
+{
+    return this->add_ctrl_instruction("Z", ctrls, q);
 }
 
 //---------------------------------------------------------------------------//
@@ -415,6 +461,50 @@ void XaccQuantum::add_ctrl_list_instruction(
                    });
     add_ctrl_indices_instruction(
         std::move(s), ctrl_indices, q, std::forward<Ts>(args)...);
+}
+
+template<class... Ts>
+void XaccQuantum::add_ctrl_instruction(std::string s,
+                                       Array ctrls,
+                                       Qubit q,
+                                       Ts... args)
+{
+    uint32_t elem_size = MemManager::array_get_elem_size(ctrls);
+    QIREE_EXPECT(elem_size == sizeof(std::uintptr_t));
+
+    uint64_t length = MemManager::array_get_size_1d(ctrls);
+    if (!length)
+    {
+        this->add_instruction(std::move(s), q, std::forward<Ts>(args)...);
+        return;
+    }
+
+    std::unordered_set<size_type> indices;
+    std::vector<int> ctrl_indices;
+    for (size_type i = 0; i < length; i++)
+    {
+        size_type ctrl_idx
+            = *(std::uintptr_t*)MemManager::array_get_element_ptr_1d(ctrls, i);
+        QIREE_EXPECT(ctrl_idx < this->num_qubits());
+        bool added = indices.insert(ctrl_idx).second;
+        QIREE_EXPECT(added);  // Check for duplicates
+        ctrl_indices.push_back(ctrl_idx);
+    }
+
+    // Control and target indices should not overlap
+    QIREE_EXPECT(!indices.count(q.value));
+
+    add_ctrl_indices_instruction(
+        std::move(s), ctrl_indices, q, std::forward<Ts>(args)...);
+}
+
+template<class... Ts>
+void XaccQuantum::add_ctrl_rot_instruction(std::string s,
+                                           Array ctrls,
+                                           Tuple rot_args)
+{
+    RotationArgs* args = (RotationArgs*)rot_args;
+    this->add_ctrl_instruction(std::move(s), ctrls, args->qubit, args->theta);
 }
 
 //---------------------------------------------------------------------------//
