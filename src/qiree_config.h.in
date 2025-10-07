@@ -12,5 +12,6 @@
 #cmakedefine01 QIREE_DEBUG
 #cmakedefine01 QIREE_USE_QSIM
 #cmakedefine01 QIREE_USE_XACC
+#cmakedefine01 QIREE_SHARED_LIBS
 
 #endif /* qiree_config_h */

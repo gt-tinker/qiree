@@ -15,6 +15,7 @@
 #include <vector>
 #include <dlfcn.h>
 
+#include "qiree_config.h"
 #include "qiree_targets.h"
 
 #include "qiree/Assert.hh"
@@ -44,15 +45,21 @@ class CQireeTest : public ::qiree::test::Test
   protected:
     void SetUp() override
     {
+#if QIREE_SHARED_LIBS
         lib_handle_ = dlopen(cqiree_library_path, RTLD_LAZY);
         ASSERT_NE(lib_handle_, nullptr)
             << "Failed to load libcqiree: " << dlerror();
+#endif
 
-#define LOAD_FUNCPTR(FUNC)                           \
-    FUNC##_fn_ = reinterpret_cast<qiree_##FUNC##_t>( \
-        dlsym(lib_handle_, "qiree_" #FUNC));         \
-    ASSERT_NE(FUNC##_fn_, nullptr)                   \
-        << "Failed to load " << #FUNC << ": " << dlerror();
+#if QIREE_SHARED_LIBS
+#    define LOAD_FUNCPTR(FUNC)                           \
+        FUNC##_fn_ = reinterpret_cast<qiree_##FUNC##_t>( \
+            dlsym(lib_handle_, "qiree_" #FUNC));         \
+        ASSERT_NE(FUNC##_fn_, nullptr)                   \
+            << "Failed to load " << #FUNC << ": " << dlerror();
+#else
+#    define LOAD_FUNCPTR(FUNC) FUNC##_fn_ = qiree_##FUNC;
+#endif
         LOAD_FUNCPTR(create);
         LOAD_FUNCPTR(load_module_from_memory);
         LOAD_FUNCPTR(load_module_from_file);

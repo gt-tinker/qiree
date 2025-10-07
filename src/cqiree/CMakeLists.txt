@@ -12,7 +12,15 @@ if(QIREE_USE_QSIM)
   list(APPEND _CQIREE_LIBS QIREE::qirqsim)
 endif()
 
-qiree_add_library(cqiree
+if(QIREE_SHARED_LIBS)
+    # When building with shared libs, this should be a shared library that can
+    # be dlopen()'d.
+    set(_LIB_TYPE MODULE)
+else()
+    set(_LIB_TYPE)
+endif()
+
+qiree_add_library(cqiree ${_LIB_TYPE}
   CQiree.cc
   QireeManager.cc
 )
