@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 #include "cqiree/CQiree.h"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <fstream>
