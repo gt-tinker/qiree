@@ -28,10 +28,10 @@ target_link_libraries(cqiree
 #----------------------------------------------------------------------------#
 
 # C/C++ source headers
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cqiree"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/cqiree"
   COMPONENT development
-  FILES_MATCHING REGEX ".*\\.hh$"
+  FILES_MATCHING REGEX ".*\\.hh?$"
 )
 
 #-----------------------------------------------------------------------------#
