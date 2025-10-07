@@ -81,7 +81,7 @@ QireeReturnCode qiree_execute(CQiree* manager, int num_shots);
  */
 QireeReturnCode qiree_save_result_items(CQiree* manager,
                                         CQireeResultRecord* encoded,
-                                        size_t encoded_size);
+                                        size_t max_items);
 
 /* Cleanly destroy a QireeManager instance */
 void qiree_destroy(CQiree* manager);
