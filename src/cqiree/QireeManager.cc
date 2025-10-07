@@ -70,6 +70,24 @@ QireeManager::ReturnCode QireeManager::load_module(std::string filename) throw()
 }
 
 //---------------------------------------------------------------------------//
+QireeManager::ReturnCode
+QireeManager::load_module(std::unique_ptr<llvm::Module> module) throw()
+{
+    try
+    {
+        module_ = std::make_unique<Module>(std::move(module));
+        QIREE_ENSURE(*module_);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "qiree failure: " << e.what() << '\n';
+        CQIREE_FAIL(fail_load, e.what());
+    }
+
+    return ReturnCode::success;
+}
+
+//---------------------------------------------------------------------------//
 QireeManager::ReturnCode QireeManager::num_quantum_reg(int& result) const
     throw()
 {

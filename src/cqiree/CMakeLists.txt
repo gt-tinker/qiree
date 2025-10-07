@@ -27,6 +27,7 @@ qiree_add_library(cqiree ${_LIB_TYPE}
 target_link_libraries(cqiree
   PRIVATE
     qiree
+    LLVM::headers
   PUBLIC
     ${_CQIREE_LIBS}
 )

@@ -49,7 +49,10 @@ function(qiree_add_test ns name)
     qiree_test_lib
     GTest::gtest_main
   )
-  if(NOT ns STREQUAL "cqiree")
+  if(ns STREQUAL "cqiree")
+    llvm_map_components_to_libnames(_llvm_libs Core irreader)
+    list(APPEND _libs LLVM::headers ${_llvm_libs})
+  else()
     list(APPEND _libs QIREE::${ns})
   endif()
   target_link_libraries(${_target} ${_libs})

@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 #pragma once
 
+#include <llvm-c/Types.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -43,6 +44,10 @@ QireeReturnCode qiree_load_module_from_memory(CQiree* manager,
                                               size_t length);
 QireeReturnCode
 qiree_load_module_from_file(CQiree* manager, char const* filename);
+
+/* Transfers ownership of this llvm::Module to QIR-EE */
+QireeReturnCode
+qiree_load_module_from_llvm_module(CQiree* manager, LLVMModuleRef module);
 
 /* Register query functions */
 QireeReturnCode qiree_num_quantum_reg(CQiree* manager, int* result);

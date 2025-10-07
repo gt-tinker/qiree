@@ -14,6 +14,10 @@
 #include <string>
 #include <vector>
 #include <dlfcn.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IRReader/IRReader.h>
+#include <llvm/Support/SourceMgr.h>
 
 #include "qiree_config.h"
 #include "qiree_targets.h"
@@ -31,6 +35,7 @@
 DECLARE_FUNCPTR(create);
 DECLARE_FUNCPTR(load_module_from_memory);
 DECLARE_FUNCPTR(load_module_from_file);
+DECLARE_FUNCPTR(load_module_from_llvm_module);
 DECLARE_FUNCPTR(num_quantum_reg);
 DECLARE_FUNCPTR(num_classical_reg);
 DECLARE_FUNCPTR(max_result_items);
@@ -64,6 +69,7 @@ class CQireeTest : public ::qiree::test::Test
         LOAD_FUNCPTR(create);
         LOAD_FUNCPTR(load_module_from_memory);
         LOAD_FUNCPTR(load_module_from_file);
+        LOAD_FUNCPTR(load_module_from_llvm_module);
         LOAD_FUNCPTR(num_quantum_reg);
         LOAD_FUNCPTR(num_classical_reg);
         LOAD_FUNCPTR(max_result_items);
@@ -91,6 +97,8 @@ class CQireeTest : public ::qiree::test::Test
     qiree_create_t create_fn_ = nullptr;
     qiree_load_module_from_memory_t load_module_from_memory_fn_ = nullptr;
     qiree_load_module_from_file_t load_module_from_file_fn_ = nullptr;
+    qiree_load_module_from_llvm_module_t load_module_from_llvm_module_fn_
+        = nullptr;
     qiree_num_quantum_reg_t num_quantum_reg_fn_ = nullptr;
     qiree_num_classical_reg_t num_classical_reg_fn_ = nullptr;
     qiree_max_result_items_t max_result_items_fn_ = nullptr;
@@ -156,6 +164,28 @@ TEST_F(CQireeTest, LoadModuleFromFile)
 
     result = load_module_from_file_fn_(manager, "nonexistent_file.ll");
     EXPECT_EQ(result, QIREE_FAIL_LOAD);
+
+    // Clean up
+    destroy_fn_(manager);
+}
+
+TEST_F(CQireeTest, LoadModuleFromLLVMModule)
+{
+    CQiree* manager = create_fn_();
+    ASSERT_NE(manager, nullptr);
+
+    auto minimal_filename = this->test_data_path("minimal.ll");
+
+    llvm::LLVMContext ctx;
+    llvm::SMDiagnostic err;
+    std::unique_ptr<llvm::Module> llvm_module
+        = llvm::parseIRFile(minimal_filename, err, ctx);
+    EXPECT_NE(llvm_module, nullptr);
+    LLVMModuleRef llvm_module_ptr = llvm::wrap(llvm_module.release());
+
+    QireeReturnCode result
+        = load_module_from_llvm_module_fn_(manager, llvm_module_ptr);
+    EXPECT_EQ(result, QIREE_SUCCESS);
 
     // Clean up
     destroy_fn_(manager);
