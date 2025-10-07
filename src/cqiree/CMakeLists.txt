@@ -12,7 +12,7 @@ if(QIREE_USE_QSIM)
   list(APPEND _CQIREE_LIBS QIREE::qirqsim)
 endif()
 
-qiree_add_library(cqiree MODULE
+qiree_add_library(cqiree
   CQiree.cc
   QireeManager.cc
 )
