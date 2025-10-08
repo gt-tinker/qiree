@@ -38,6 +38,7 @@ option(QIREE_BUILD_TESTS "Build QIR-EE unit tests" ON)
 option(QIREE_BUILD_EXAMPLES "Build QIR-EE examples" OFF)
 option(QIREE_USE_QSIM "Download and build Google qsim backend" OFF)
 option(QIREE_USE_XACC "Build XACC interface" ON)
+option(QIREE_BUILD_APPS "Build command-line programs" ON)
 
 qiree_set_default(BUILD_TESTING ${QIREE_BUILD_TESTS})
 
@@ -200,7 +201,9 @@ endif()
 # APPLICATIONS AND BINARIES
 #----------------------------------------------------------------------------#
 
-add_subdirectory(app)
+if(QIREE_BUILD_APPS)
+  add_subdirectory(app)
+endif()
 
 #----------------------------------------------------------------------------#
 # EXAMPLES
