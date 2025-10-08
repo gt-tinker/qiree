@@ -269,8 +269,9 @@ TEST_F(CQireeTest, Run)
     result = save_result_items_fn_(manager, results.data(), results.size());
     EXPECT_EQ(result, QIREE_SUCCESS);
 
-    // First entry contains the number of results
-    EXPECT_EQ(results[0].key, 0);
+    // First entry contains the number of measurement bits (3) and the number
+    // of results (4)
+    EXPECT_EQ(results[0].key, 3);
     EXPECT_EQ(results[0].count, 4);
 
     // For ease of processing, reinterpret the results as C++ data structures

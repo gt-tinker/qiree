@@ -270,8 +270,8 @@ QireeManager::save_result_items(ResultRecord* encoded,
 
     try
     {
-        // Save number of records
-        *encoded++ = {0, result_->size()};
+        // Save number of bits and number of records
+        *encoded++ = {result_->num_bits(), result_->size()};
         for (auto&& [bitstring, count] : *result_)
         {
             std::uint64_t bitint{0};

@@ -72,11 +72,11 @@ QireeReturnCode qiree_execute(CQiree* manager, int num_shots);
  * - the bitstring is "little endian" with shifting: qubit N is
  *  `(value >> N) & 1` for N in [0, 64)
  *
- * Example: [xxx, 123, 0, 3, 15, 10, ...]
- * - xxx: ignored
+ * Example: [(8, 123), (0, 3), (15, 10), ...]
+ * - 8: there are 8 bits in each measurement
  * - 123: number of following entries
- * - 0: 000000000 bitstring
- * - 3: number of samples of "0000000"
+ * - 0: 00000000 bitstring
+ * - 3: number of samples of "00000000"
  * - 15: 00001111 bitstring
  * - 10: number of samples
  */

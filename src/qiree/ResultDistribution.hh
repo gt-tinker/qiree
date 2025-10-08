@@ -54,6 +54,13 @@ class ResultDistribution
     //! Get the number of nonzero entries
     auto size() const throw() { return distribution_.size(); }
 
+    //! Returns the number of bits in each result (or 0 if there are none)
+    std::size_t num_bits() const throw()
+    {
+        return distribution_.empty() ? 0
+                                     : distribution_.begin()->first.length();
+    }
+
   private:
     // Sparse map of {bit string -> count}
     std::unordered_map<std::string, std::size_t> distribution_;
