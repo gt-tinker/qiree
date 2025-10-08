@@ -119,22 +119,11 @@ if((LLVM_VERSION VERSION_LESS 14)
 endif()
 
 if(QIREE_USE_QSIM)
-  # Declare and download qsim: it's header-only and the code is in "lib",
-  # so download it into "external/qsim" directory and include "external"
-  FetchContent_Declare(
-    qsim_content
-    QUIET
-    GIT_REPOSITORY https://github.com/quantumlib/qsim.git
-    GIT_TAG 55b4d0e7ea8f085a1709c2c06ff1e28b3aa93357 # 'main' on 22 Nov 2024
-    SOURCE_SUBDIR "lib" # Don't load top-level cmake file
-    SOURCE_DIR "external/qsim"
-  )
-  FetchContent_MakeAvailable(qsim_content)
   qiree_add_library(qiree_qsim INTERFACE)
   add_library(QIREE::qsim ALIAS qiree_qsim)
+  # The parent repository contains a qsim submodule
   target_include_directories(qiree_qsim SYSTEM INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/external>"
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/external>"
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/..>
   )
 endif()
 
