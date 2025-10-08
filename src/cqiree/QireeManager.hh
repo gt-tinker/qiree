@@ -57,8 +57,9 @@ class QireeManager
                            std::string const& entrypoint) throw();
     ReturnCode num_quantum_reg(int& result) const throw();
     ReturnCode num_classical_reg(int& result) const throw();
-    ReturnCode setup_executor(std::string_view backend,
-                              std::string_view config_json = {}) throw();
+    ReturnCode setup_backend(std::string_view backend,
+                             std::string_view config_json = {}) throw();
+    ReturnCode setup_executor() throw();
 
     ReturnCode max_result_items(int num_shots, std::size_t& result) const
         throw();

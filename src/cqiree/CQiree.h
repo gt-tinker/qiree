@@ -58,10 +58,13 @@ QireeReturnCode qiree_num_classical_reg(CQiree* manager, int* result);
 QireeReturnCode
 qiree_max_result_items(CQiree* manager, int num_shots, size_t* result);
 
-/* Executor setup and execution: config_json may be null */
-QireeReturnCode qiree_setup_executor(CQiree* manager,
-                                     char const* backend,
-                                     char const* config_json);
+/* Backend setup: config_json may be null */
+QireeReturnCode qiree_setup_backend(CQiree* manager,
+                                    char const* backend,
+                                    char const* config_json);
+
+/* Execution setup */
+QireeReturnCode qiree_setup_executor(CQiree* manager);
 
 QireeReturnCode qiree_execute(CQiree* manager, int num_shots);
 

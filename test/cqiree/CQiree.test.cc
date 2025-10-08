@@ -39,6 +39,7 @@ DECLARE_FUNCPTR(load_module_from_llvm_module);
 DECLARE_FUNCPTR(num_quantum_reg);
 DECLARE_FUNCPTR(num_classical_reg);
 DECLARE_FUNCPTR(max_result_items);
+DECLARE_FUNCPTR(setup_backend);
 DECLARE_FUNCPTR(setup_executor);
 DECLARE_FUNCPTR(execute);
 DECLARE_FUNCPTR(save_result_items);
@@ -73,6 +74,7 @@ class CQireeTest : public ::qiree::test::Test
         LOAD_FUNCPTR(num_quantum_reg);
         LOAD_FUNCPTR(num_classical_reg);
         LOAD_FUNCPTR(max_result_items);
+        LOAD_FUNCPTR(setup_backend);
         LOAD_FUNCPTR(setup_executor);
         LOAD_FUNCPTR(execute);
         LOAD_FUNCPTR(save_result_items);
@@ -102,6 +104,7 @@ class CQireeTest : public ::qiree::test::Test
     qiree_num_quantum_reg_t num_quantum_reg_fn_ = nullptr;
     qiree_num_classical_reg_t num_classical_reg_fn_ = nullptr;
     qiree_max_result_items_t max_result_items_fn_ = nullptr;
+    qiree_setup_backend_t setup_backend_fn_ = nullptr;
     qiree_setup_executor_t setup_executor_fn_ = nullptr;
     qiree_execute_t execute_fn_ = nullptr;
     qiree_save_result_items_t save_result_items_fn_ = nullptr;
@@ -255,8 +258,11 @@ TEST_F(CQireeTest, Run)
         GTEST_SKIP() << "Cannot test cqiree execution: QSim is disabled";
     }
 
-    // Setup executor and run
-    result = setup_executor_fn_(manager, "qsim", nullptr);
+    // Setup backend and executor and then run
+    result = setup_backend_fn_(manager, "qsim", nullptr);
+    ASSERT_EQ(result, QIREE_SUCCESS);
+
+    result = setup_executor_fn_(manager);
     ASSERT_EQ(result, QIREE_SUCCESS);
 
     result = execute_fn_(manager, 100);

@@ -100,9 +100,9 @@ qiree_max_result_items(CQiree* manager, int num_shots, size_t* result)
         cpp_manager->max_result_items(num_shots, *result));
 }
 
-QireeReturnCode qiree_setup_executor(CQiree* manager,
-                                     char const* backend,
-                                     char const* config_json)
+QireeReturnCode qiree_setup_backend(CQiree* manager,
+                                    char const* backend,
+                                    char const* config_json)
 {
     if (!manager)
         return QIREE_NOT_READY;
@@ -116,7 +116,16 @@ QireeReturnCode qiree_setup_executor(CQiree* manager,
                                              : std::string_view();
 
     return static_cast<QireeReturnCode>(
-        cpp_manager->setup_executor(backend_sv, config_sv));
+        cpp_manager->setup_backend(backend_sv, config_sv));
+}
+
+QireeReturnCode qiree_setup_executor(CQiree* manager)
+{
+    if (!manager)
+        return QIREE_NOT_READY;
+
+    auto* cpp_manager = reinterpret_cast<QM*>(manager);
+    return static_cast<QireeReturnCode>(cpp_manager->setup_executor());
 }
 
 QireeReturnCode qiree_execute(CQiree* manager, int num_shots)

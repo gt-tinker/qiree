@@ -153,18 +153,9 @@ QireeManager::max_result_items(int num_shots, std::size_t& result) const
 
 //---------------------------------------------------------------------------//
 QireeManager::ReturnCode
-QireeManager::setup_executor(std::string_view backend,
-                             std::string_view config_json) throw()
+QireeManager::setup_backend(std::string_view backend,
+                            std::string_view config_json) throw()
 {
-    if (!module_)
-    {
-        CQIREE_FAIL(not_ready, "cannot create executor before module load");
-    }
-    if (execute_)
-    {
-        CQIREE_FAIL(not_ready, "cannot create executor again");
-    }
-
     try
     {
         if (!config_json.empty())
@@ -204,6 +195,16 @@ QireeManager::setup_executor(std::string_view backend,
     {
         CQIREE_FAIL(fail_load,
                     "error while creating quantum runtimes: " << e.what());
+    }
+
+    return ReturnCode::success;
+}
+
+QireeManager::ReturnCode QireeManager::setup_executor() throw()
+{
+    if (!module_)
+    {
+        CQIREE_FAIL(not_ready, "cannot create executor before module load");
     }
 
     try
