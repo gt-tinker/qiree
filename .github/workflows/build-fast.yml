@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   linux:
-    name: ${{matrix.runner}}-${{matrix.compiler}}-${{matrix.version}}-${{ matrix.shared == 'ON' && 'shared' || 'static' }}-llvm${{matrix.llvm}}
+    name: ${{matrix.runner}}-${{matrix.compiler}}-${{matrix.version}}-${{ matrix.shared && 'shared' || 'static' }}-llvm${{matrix.llvm}}
     strategy:
       matrix:
         include:
@@ -18,22 +18,17 @@ jobs:
             compiler: gcc
             version: 12
             llvm: 14
-            shared: ON
+            shared: true
           - runner: jammy
             compiler: gcc
             version: 12
             llvm: 14
-            shared: OFF
+            shared: false
           - runner: jammy
             compiler: clang
             version: 15
             llvm: 15
-            shared: ON
-          - runner: jammy
-            compiler: clang
-            version: 15
-            llvm: 15
-            shared: OFF
+            shared: true
     runs-on: >-
       ${{  matrix.runner == 'focal' && 'ubuntu-20.04'
         || matrix.runner == 'jammy' && 'ubuntu-22.04'

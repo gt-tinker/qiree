@@ -38,7 +38,6 @@ option(QIREE_BUILD_TESTS "Build QIR-EE unit tests" ON)
 option(QIREE_BUILD_EXAMPLES "Build QIR-EE examples" OFF)
 option(QIREE_USE_QSIM "Download and build Google qsim backend" OFF)
 option(QIREE_USE_XACC "Build XACC interface" ON)
-option(QIREE_SHARED_LIBS "Build shared libraries, not static libraries" ON)
 
 qiree_set_default(BUILD_TESTING ${QIREE_BUILD_TESTS})
 
@@ -78,10 +77,10 @@ qiree_set_default(CMAKE_CXX_EXTENSIONS OFF)
 
 ### Linking flags ###
 # Default to building shared libraries (*not* a cache variable)
-qiree_set_default(BUILD_SHARED_LIBS ${QIREE_SHARED_LIBS})
+qiree_set_default(BUILD_SHARED_LIBS ON)
 # Inform installed binaries of external library rpaths
 qiree_set_default(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
-if(QIREE_SHARED_LIBS)
+if(BUILD_SHARED_LIBS)
   # Inform installed binaries of internal library rpaths
   qiree_set_default(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
   # Do not relink libs/binaries when dependent shared libs change

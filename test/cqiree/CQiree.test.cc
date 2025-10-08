@@ -17,6 +17,7 @@
 
 #include "qiree_config.h"
 #include "qiree_targets.h"
+#include "qiree_test_config.h"
 
 #include "qiree/Assert.hh"
 #include "qiree_test.hh"
@@ -45,13 +46,13 @@ class CQireeTest : public ::qiree::test::Test
   protected:
     void SetUp() override
     {
-#if QIREE_SHARED_LIBS
+#if BUILD_SHARED_LIBS
         lib_handle_ = dlopen(cqiree_library_path, RTLD_LAZY);
         ASSERT_NE(lib_handle_, nullptr)
             << "Failed to load libcqiree: " << dlerror();
 #endif
 
-#if QIREE_SHARED_LIBS
+#if BUILD_SHARED_LIBS
 #    define LOAD_FUNCPTR(FUNC)                           \
         FUNC##_fn_ = reinterpret_cast<qiree_##FUNC##_t>( \
             dlsym(lib_handle_, "qiree_" #FUNC));         \
