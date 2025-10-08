@@ -46,8 +46,9 @@ QireeReturnCode
 qiree_load_module_from_file(CQiree* manager, char const* filename);
 
 /* Transfers ownership of this llvm::Module to QIR-EE */
-QireeReturnCode
-qiree_load_module_from_llvm_module(CQiree* manager, LLVMModuleRef module);
+QireeReturnCode qiree_load_module_from_llvm_module(CQiree* manager,
+                                                   LLVMModuleRef module,
+                                                   char const* entrypoint);
 
 /* Register query functions */
 QireeReturnCode qiree_num_quantum_reg(CQiree* manager, int* result);

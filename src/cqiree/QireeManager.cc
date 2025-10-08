@@ -71,11 +71,12 @@ QireeManager::ReturnCode QireeManager::load_module(std::string filename) throw()
 
 //---------------------------------------------------------------------------//
 QireeManager::ReturnCode
-QireeManager::load_module(std::unique_ptr<llvm::Module> module) throw()
+QireeManager::load_module(std::unique_ptr<llvm::Module> module,
+                          std::string const& entrypoint) throw()
 {
     try
     {
-        module_ = std::make_unique<Module>(std::move(module));
+        module_ = std::make_unique<Module>(std::move(module), entrypoint);
         QIREE_ENSURE(*module_);
     }
     catch (std::exception const& e)

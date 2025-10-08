@@ -184,7 +184,7 @@ TEST_F(CQireeTest, LoadModuleFromLLVMModule)
     LLVMModuleRef llvm_module_ptr = llvm::wrap(llvm_module.release());
 
     QireeReturnCode result
-        = load_module_from_llvm_module_fn_(manager, llvm_module_ptr);
+        = load_module_from_llvm_module_fn_(manager, llvm_module_ptr, "main");
     EXPECT_EQ(result, QIREE_SUCCESS);
 
     // Clean up

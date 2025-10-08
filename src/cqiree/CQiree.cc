@@ -49,17 +49,19 @@ qiree_load_module_from_file(CQiree* manager, char const* filename)
         cpp_manager->load_module(std::string(filename)));
 }
 
-QireeReturnCode
-qiree_load_module_from_llvm_module(CQiree* manager, LLVMModuleRef module)
+QireeReturnCode qiree_load_module_from_llvm_module(CQiree* manager,
+                                                   LLVMModuleRef module,
+                                                   char const* entrypoint)
 {
     if (!manager)
         return QIREE_NOT_READY;
 
     std::unique_ptr<llvm::Module> module_ptr(llvm::unwrap(module));
+    std::string entrypoint_str(entrypoint);
 
     auto* cpp_manager = reinterpret_cast<QM*>(manager);
     return static_cast<QireeReturnCode>(
-        cpp_manager->load_module(std::move(module_ptr)));
+        cpp_manager->load_module(std::move(module_ptr), entrypoint_str));
 }
 
 QireeReturnCode qiree_num_quantum_reg(CQiree* manager, int* result)

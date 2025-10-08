@@ -53,7 +53,8 @@ class QireeManager
 
     ReturnCode load_module(std::string_view data_contents) throw();
     ReturnCode load_module(std::string filename) throw();
-    ReturnCode load_module(std::unique_ptr<llvm::Module> module) throw();
+    ReturnCode load_module(std::unique_ptr<llvm::Module> module,
+                           std::string const& entrypoint) throw();
     ReturnCode num_quantum_reg(int& result) const throw();
     ReturnCode num_classical_reg(int& result) const throw();
     ReturnCode setup_executor(std::string_view backend,
