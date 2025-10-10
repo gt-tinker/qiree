@@ -222,8 +222,30 @@ void QsimQuantum::s(Qubit q)
 {
     this->add_gate<qsim::GateS>(q.value);
 }
+void QsimQuantum::s_adj(Qubit q)
+{
+    // Observe that Z = S†S† by definition.
+    // Thus, S† = SS†S†
+    //          = SZ.
+    this->add_gate<qsim::GateZ>(q.value);
+    this->add_gate<qsim::GateS>(q.value);
+}
 void QsimQuantum::t(Qubit q)
 {
+    this->add_gate<qsim::GateT>(q.value);
+}
+void QsimQuantum::t_adj(Qubit q)
+{
+    // Observe that Z = S†S† and S† = T†T† by definition.
+    // Thus, T† = TT†T†
+    //          = TS†.
+    // Similarly, S† = SS†S†
+    //               = SZ.
+    // Combining these identities yields
+    // T† = TS†
+    //    = TSZ.
+    this->add_gate<qsim::GateZ>(q.value);
+    this->add_gate<qsim::GateS>(q.value);
     this->add_gate<qsim::GateT>(q.value);
 }
 

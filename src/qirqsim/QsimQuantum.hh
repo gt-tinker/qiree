@@ -61,7 +61,6 @@ class QsimQuantum final : virtual public QuantumNotImpl
     //!@{
     //! \name Circuit construction
     // void ccx(Qubit, Qubit) final;
-    void ccnot(Qubit, Qubit, Qubit);  // TODO: not in examples or qir runner
     void cnot(Qubit, Qubit) final;
     void cx(Qubit, Qubit) final;
     // void cy(Qubit, Qubit) final;
@@ -73,10 +72,10 @@ class QsimQuantum final : virtual public QuantumNotImpl
     void rz(double, Qubit) final;
     // void rzz(double, Qubit, Qubit) final;
     void s(Qubit) final;
-    // void s_adj(Qubit) final;
+    void s_adj(Qubit) final;
     // void swap(Qubit, Qubit) final;
     void t(Qubit) final;
-    // void t_adj(Qubit) final;
+    void t_adj(Qubit) final;
     void x(Qubit) final;
     void y(Qubit) final;
     void z(Qubit) final;
